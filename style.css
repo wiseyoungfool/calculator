@@ -4,7 +4,29 @@ button {
 }
 
 .display {
-    border: 10px black;
+    border: 10px solid black;
     margin: 20px;
     padding: 20px;
+    justify-content: center;
+    text-justify: center;
+    display: flex;
+    min-height: 50px;
+}
+
+.numbers {
+    color: yellowgreen;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 5px;
+}
+
+.operators {
+    color: orange;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.calculator {
+    display:flexbox auto;
 }

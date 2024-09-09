@@ -4,14 +4,16 @@ let operator = null;
 let display = null;
 let result = null;
 let stage=0;
+let decimal = null;
 
 document.addEventListener("DOMContentLoaded", () => {
     display = document.querySelector('.display')
     document.querySelector('#equals').addEventListener('click', calculateResult);
     document.querySelector('#clear').addEventListener('click', clear);
-
+    decimalButton = document.querySelector('#decimal');
     numbers = document.querySelectorAll('.number');
     operators = document.querySelectorAll('.operator');
+    document.querySelector('#sign').addEventListener('click', sign);
     numbers.forEach(number => {
         number.addEventListener("click", () => addNumber(number.value));
     });
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function calculateResult() {
     console.log("Calculate result!")
-    if (first_number!=null && second_number!=null && operator!=null && stage < 3) {
+    if (first_number!=null && second_number!=null && operator!=null) {
         if (operator === "+") {
             result = Number(first_number) + Number(second_number);
             display.innerHTML = result;
@@ -41,17 +43,34 @@ function calculateResult() {
                 result = first_number / second_number;
                 display.innerHTML = result;
             }
+            else error();
         }
+        stage=0;
+        first_number = result;
+        second_number = null;
     }
-    stage=3;
+    else error();
+}
+
+function checkDecimal() {
+    if (display.innerHTML.includes('.')) {
+        decimalButton.disabled = true;
+    }
+    else decimalButton.disabled = false;
 }
 
 function addOperator(op) {
-    if (stage===0) {
+    if (stage===0 && first_number!=null) {
         operator = op;
         display.innerHTML+=" " + op;
         stage = 1;
     }
+    else error();
+}
+
+function error() {
+    stage=3;
+    display.innerHTML="ERROR";
 }
 
 function clear() {
@@ -75,6 +94,28 @@ function addNumber(value) {
         stage = 0;
     }
     display.innerHTML+=value
-    if (stage===0) first_number = display.innerHTML;
-    else second_number = display.innerHTML;
+    setValue(display.innerHTML);
+
+    checkDecimal();
+}
+
+function sign() {
+    let num = display.innerHTML;
+    if (num.includes('-')) {
+        num = num.replace(/-/g, "");
+        display.innerHTML = num;
+        setValue(num);
+        console.log("Removing sign!");
+    }
+    else {
+        display.innerHTML = '-'+num;
+        setValue('-'+num);
+        console.log('Adding sign!');
+    }
+
+}
+
+function setValue(val) {
+    if (stage===0) first_number = val;
+    else second_number = val;
 }
