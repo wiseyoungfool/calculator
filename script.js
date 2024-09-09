@@ -20,6 +20,22 @@ document.addEventListener("DOMContentLoaded", () => {
     operators.forEach(operator => {
         operator.addEventListener('click', () => addOperator(operator.value));
     })
+
+    document.addEventListener('keydown', (event) => {
+        const key = event.key;
+        if (!isNaN(key)) {
+            addNumber(key);
+        } else if (key === '.') {
+            addNumber(key);
+        } else if (key === 'Enter' || key === '=') {
+            calculateResult();
+        } else if (key === 'Backspace') {
+            clearDisplay();
+        } else if (['+', '-', '*', '/'].includes(key)) {
+            addOperator(key);
+        }
+        console.log(`Keyboard key ${key} pressed!`)
+    });
 });
 
 
